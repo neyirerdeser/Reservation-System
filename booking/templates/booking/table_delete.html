@@ -1,0 +1,27 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>deleting from your menu</h1>
+Reserved tables are not listed below, to delete a reserved table first you need to cancel the reservation
+{% if error_message %}
+<p><strong>{{ error_message }}</strong>
+{% endif %}
+
+<form action="{% url 'booking:table_delete_save' restaurant.id %}" method="post">
+	
+	{% csrf_token %}
+	
+	{% for table in tables %}
+	{% if not table.reserved%}
+    <input type="checkbox" name="table" id="table{{forloop.counter}}" value="{{table.id}}" />
+		<label for="table{{forloop.counter}}"> {{table}} </label><br/>
+	{% endif %}
+	{% endfor %}
+	
+	<input type="submit" value="delete"/>
+
+</form>
+
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+	<h1>{{restaurant.name}}</h1>
+	<br/>
+	<h2>your menu <a href="{% url 'booking:menu_add' restaurant.id %}">add</a>/<a href="{% url 'booking:menu_delete' restaurant.id %}">delete</a></h2> <!--make small-->
+
+	{% for menu in restaurant.menu_set.all %}
+		<li>
+			{{menu.content}} : {{menu.price}}
+		</li>
+	{% endfor %}
+	<br/>
+	<h2>your tables <a href="{% url 'booking:table_add' restaurant.id %}">add</a>/<a href="{% url 'booking:table_delete' restaurant.id %}">delete</a></h2> <!--make small-->
+
+	{% for table in tables %}
+		<li>
+			table of {{table.seat_count}} : 
+			{% if table.reserved %}
+				reserved under 
+				{% for reservation in table.reservation_set.all %}
+						{{reservation.name}}, table of {{reservation.people}}
+				{% endfor %}
+			{% else %}
+				available 
+			{%endif%}
+		</li>
+	{% endfor %}
+	<br/>
+	<h2>reservations</h2>
+	<p><strong>Warning:</strong> once you click cancel you will not be asked to confrim, you cannot undo your action</p>
+	{% for reservation in reservations %}
+	<li> table of {{reservation.people}} for {{reservation.name}} <a href="{% url 'booking:cancel' reservation.id restaurant.id %}">cancel</a> </li>
+	{% endfor %}
+
+{% endblock %}
+
+

@@ -1,0 +1,24 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>deleting from your menu</h1>
+
+{% if error_message %}
+<p><strong>{{ error_message }}</strong>
+{% endif %}
+
+<form action="{% url 'booking:menu_delete_save' restaurant.id %}" method="post">
+	
+	{% csrf_token %}
+	
+	{% for item in restaurant.menu_set.all %}
+    <input type="checkbox" name="item" id="item{{forloop.counter}}" value="{{item.id}}" />
+		<label for="item{{forloop.counter}}"> {{item}} </label><br/>
+	{% endfor %}
+	
+	<input type="submit" value="delete"/>
+
+</form>
+
+{% endblock %}

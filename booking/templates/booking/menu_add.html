@@ -1,0 +1,33 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>adding to your menu</h1>
+
+{% if error_message %}
+	<p><strong>{{ error_message }}</strong>
+		<br/>
+{% if error_contents %}
+	items you need to add again:
+	{% for item in error_contents%}
+		{{item}}
+	{% endfor %}
+ {% endif %}
+		</p>
+{% endif %}
+
+<form action="{% url 'booking:menu_add_save' restaurant.id %}" method="POST">
+	{% csrf_token %}
+	
+	{% for i in "12345"%}
+		<label>item name</label>
+		<input type="text" name="content{{forloop.counter}}">
+		<label>, price</label>
+		<input type="number" name="price{{forloop.counter}}" min=1>
+		<br />
+	{% endfor %}
+	<br />
+	<input type="submit" value="save">
+</form>
+
+{% endblock %}

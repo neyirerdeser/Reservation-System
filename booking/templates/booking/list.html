@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>Restaurants we have today</h1>
+<p>Click a name to start your reservation.<br/>To see the menu, click on the menu next to each restaurant</p>
+{% if restaurant_list %}
+    <ul>
+    {% for restaurant in restaurant_list %}
+        <li><a href="{% url 'booking:seating' restaurant.id %}">{{restaurant.name}}</a> with {{restaurant.total_seats}} seat{{restaurant.total_seats|pluralize}} available <a href="{% url 'booking:menu' restaurant.id %}">menu</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No restaurants are available at the moment.</p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>{{restaurant.name}} Menu</h1>
+
+
+{% for menu in restaurant.menu_set.all %}
+	<li>
+		{{menu.content}} : {{menu.price}}
+	</li>
+{% endfor %}
+
+{% endblock %}

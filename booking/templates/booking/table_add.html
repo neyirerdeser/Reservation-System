@@ -1,0 +1,27 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>adding tables</h1>
+
+{% if error_message %}
+	<p><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+<form action="{% url 'booking:table_add_save' restaurant.id %}" method="post">
+	{% csrf_token %}
+
+	<label>amount of chair around each table</label><br />
+	<ol>
+	{% for i in "0123456789" %}
+		<li><input type="number" name="people{{forloop.counter}}" min=1 max=100><br /></li>
+	{% endfor %}
+		
+	<br />
+	<input type="submit" value="save">
+	</ol>
+	<br />
+	
+</form>
+
+{% endblock %}

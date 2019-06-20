@@ -1,0 +1,28 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>{{restaurant.name}}</h1>
+
+{% if error_message %}
+<p><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+<form action="{% url 'booking:reserve' restaurant.id %}" method="post">
+	{% csrf_token %}
+	
+	
+	<label>Name of Reservation</label>
+	<input type="text" name="name"/>
+	
+	<label>Number of People</label>
+	<select name="people">
+		{% for i in i|rjust:restaurant.total_seats %}
+				<option value="{{forloop.counter}}">{{forloop.counter}}</option>
+		{% endfor %}
+	</select>
+	
+<input type="submit" value="Reserve"/>
+	
+</form>
+
+{% endblock %}
