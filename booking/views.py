@@ -3,7 +3,6 @@ from django.shortcuts import get_object_or_404, render
 from django.views import generic
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.utils import timezone
 from django.contrib.auth.models import User
 
 
@@ -154,10 +153,10 @@ def reserve(request, restaurant_id):
     if not reservation_name:
         return render(request, 'booking/seating.html',
                       {'restaurant': restaurant, 'error_message': "Please give a reservation_name"})
-    tables_to_check = list(restaurant.table_set.filter(reserved=False).order_by('seat_count'))
+    tables_to_check = list(Table.objects.filter(restaurant=restaurant, reserved=False).order_by('seat_count'))
     tables = get_tables(restaurant, people, tables_to_check)
     for table in tables:
-        Reservation.objects.create(table=table, date=timezone.now(), name=reservation_name, people=people)
+        Reservation.objects.create(table=table, name=reservation_name, people=people)
         table.reserved = True
         table.save()
 

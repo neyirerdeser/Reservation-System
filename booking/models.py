@@ -12,6 +12,7 @@ class Restaurant(models.Model):
 
 
 class Table(models.Model):
+    id = models.IntegerField(primary_key=True)
     restaurant = models.ForeignKey(Restaurant)
     seat_count = models.IntegerField()
     reserved = models.BooleanField(default=False)
@@ -34,7 +35,7 @@ class Table(models.Model):
             self.restaurant.save()
 
     def __str__(self):
-        return str(self.restaurant) + ', seats:' + str(self.seat_count) + ' reserved: ' + str(self.reserved)
+        return str(self.id)+str(self.restaurant) + ', seats:' + str(self.seat_count) + ' reserved: ' + str(self.reserved)
 
 
 class Menu(models.Model):
@@ -57,8 +58,13 @@ class Reservation(models.Model):
         table.save()
         super(Reservation, self).delete(*args, **kwargs)
 
+    def create(self, table, *args, **kwargs):
+        table.reserved = True
+        table.save()
+        super(Reservation, self).create(table=table, *args, **kwargs)
+
     def __str__(self):
-        return str(self.name) + ' at ' + str(self.table.restaurant.name) + ' for ' + str(self.people)
+        return str(self.table.id)+str(self.name) + ' at ' + str(self.table.restaurant.name) + ' for ' + str(self.people)
 
 # def reset_day():
 #     for reservation in Reservation.objects.all():
